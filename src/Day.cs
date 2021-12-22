@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdventOfCode
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class DayAttribute : Attribute
+    public sealed class DayAttribute : Attribute
     {
         public DayAttribute(int dayNumber, string name)
         {
@@ -16,11 +12,13 @@ namespace AdventOfCode
         }
 
         public int DayNumber { get; }
+        public int Year { get; set; } = -1;
         public string Name { get; }
     }
 
     public interface IDay
     {
-        void Run();
+        void Run(string input);
+        string InputExtension { get; }
     }
 }
