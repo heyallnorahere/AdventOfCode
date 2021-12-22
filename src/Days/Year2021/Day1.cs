@@ -55,6 +55,5 @@ namespace AdventOfCode.Days.Year2021
             Console.WriteLine($"The depth measurement increased {depthIncreaseCount} times.");
             Console.WriteLine($"The sliding window sum increased {slidingWindowSumIncreaseCount} times.");
         }
-        public string InputExtension => "txt";
     }
 }

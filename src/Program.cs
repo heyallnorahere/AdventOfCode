@@ -102,23 +102,10 @@ namespace AdventOfCode
 
             return days;
         }
-        private static int RequestInput(string prompt)
-        {
-            Console.Write($"{prompt}: ");
-
-            // verify that the user did not immediately hit enter
-            string? inputString = Console.ReadLine();
-            if (inputString == null || inputString.Length == 0)
-            {
-                throw new ArgumentException("Cannot operate on no input!");
-            }
-
-            return int.Parse(inputString);
-        }
         private static void Run(IDay instance, int year, int dayNumber)
         {
             // read input
-            string path = $"input/{year}/{dayNumber}.{instance.InputExtension}";
+            string path = $"input/{year}/{dayNumber}.txt";
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException($"Could not open input file: {path}");
@@ -148,7 +135,7 @@ namespace AdventOfCode
             {
                 Console.WriteLine($"\t{year}");
             }
-            int selectedYear = RequestInput("Please select a year");
+            int selectedYear = Utilities.RequestInput("Please select a year");
 
             // verify that the selected year exists
             if (!days.ContainsKey(selectedYear))
@@ -163,7 +150,7 @@ namespace AdventOfCode
                 DayInfo dayInfo = days[selectedYear][dayNumber];
                 Console.WriteLine($"\t{dayNumber}: {dayInfo.Name}");
             }
-            int selectedDay = RequestInput("Please select a day");
+            int selectedDay = Utilities.RequestInput("Please select a day");
 
 
             // verify that the requested day exists

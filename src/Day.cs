@@ -19,6 +19,5 @@ namespace AdventOfCode
     public interface IDay
     {
         void Run(string input);
-        string InputExtension { get; }
     }
 }
