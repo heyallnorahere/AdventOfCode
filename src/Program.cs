@@ -114,8 +114,9 @@ namespace AdventOfCode
             var reader = new StreamReader(stream);
             string input = reader.ReadToEnd();
 
-            // clear the console
+            // clear the console and print the url of the challenge
             Console.Clear();
+            Console.WriteLine($"Original challenge: https://adventofcode.com/{year}/day/{dayNumber} \n");
 
             // run code
             instance.Run(input);
