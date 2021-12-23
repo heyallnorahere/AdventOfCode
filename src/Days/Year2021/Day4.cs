@@ -11,24 +11,24 @@ namespace AdventOfCode.Days.Year2021
             mData = data;
         }
 
-        public bool Mark((int x, int y) pos)
+        public bool Mark(Vector pos)
         {
-            if (pos.x >= Size || pos.y >= Size)
+            if (pos.X >= Size || pos.Y >= Size)
             {
                 return false;
             }
             if (mMarked.Add(pos))
             {
                 mFinished = null;
-                mLastCalled = mData[pos.x, pos.y];
+                mLastCalled = mData[pos.X, pos.Y];
                 return true;
             }
             return false;
         }
 
-        public bool Marked((int x, int y) pos) => mMarked.Contains(pos);
+        public bool Marked(Vector pos) => mMarked.Contains(pos);
 
-        public (int x, int y)? FindNumber(int number)
+        public Vector? FindNumber(int number)
         {
             for (int x = 0; x < Size; x++)
             {
@@ -119,7 +119,7 @@ namespace AdventOfCode.Days.Year2021
         private int mLastCalled = 0;
         private bool? mFinished = null;
         private readonly int[,] mData;
-        private readonly HashSet<(int x, int y)> mMarked = new();
+        private readonly HashSet<Vector> mMarked = new();
     }
     public sealed class BoardFactory
     {
@@ -131,26 +131,26 @@ namespace AdventOfCode.Days.Year2021
                 mCurrentData = new int[BingoBoard.Size, BingoBoard.Size];
             }
 
-            mCurrentData[mCurrentPos.x, mCurrentPos.y] = number;
-            mCurrentPos.x++;
+            mCurrentData[mCurrentPos.X, mCurrentPos.Y] = number;
+            mCurrentPos.X++;
 
-            if (mCurrentPos.x >= BingoBoard.Size)
+            if (mCurrentPos.X >= BingoBoard.Size)
             {
-                mCurrentPos.x = 0;
-                mCurrentPos.y++;
+                mCurrentPos.X = 0;
+                mCurrentPos.Y++;
             }
 
-            if (mCurrentPos.y >= BingoBoard.Size)
+            if (mCurrentPos.Y >= BingoBoard.Size)
             {
-                mCurrentPos.y = 0;
+                mCurrentPos.Y = 0;
                 var board = new BingoBoard(mCurrentData);
                 mCurrentData = null;
                 mBoards.Add(board);
             }
         }
-        public bool IncompleteBoard() => mCurrentPos.x > 0 || mCurrentPos.y > 0;
+        public bool IncompleteBoard() => mCurrentPos.X > 0 || mCurrentPos.Y > 0;
         private int[,]? mCurrentData = null;
-        private (int x, int y) mCurrentPos = (0, 0);
+        private Vector mCurrentPos = (0, 0);
         private readonly List<BingoBoard> mBoards = new();
     }
     [Day(4, "Giant Squid")]
@@ -158,7 +158,7 @@ namespace AdventOfCode.Days.Year2021
     {
         public void Run(string input)
         {
-            string[] lines = input.Split('\n');
+            string[] lines = input.Split('\r', '\n');
             if (lines.Length == 0)
             {
                 throw new ArgumentException("Cannot play bingo with no input!");

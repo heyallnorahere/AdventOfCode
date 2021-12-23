@@ -8,7 +8,7 @@ namespace AdventOfCode.Days.Year2021
     {
         public void Run(string input)
         {
-            string[] lines = input.Split('\n');
+            string[] lines = input.Split('\r', '\n');
             var inputData = new List<int>();
             foreach (var line in lines)
             {
