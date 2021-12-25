@@ -158,8 +158,8 @@ namespace AdventOfCode.Days.Year2021
     {
         public void Run(string input)
         {
-            string[] lines = input.Split('\r', '\n');
-            if (lines.Length == 0)
+            var lines = input.SplitLines();
+            if (lines.Count == 0)
             {
                 throw new ArgumentException("Cannot play bingo with no input!");
             }
@@ -171,12 +171,12 @@ namespace AdventOfCode.Days.Year2021
             }
 
             var factory = new BoardFactory();
-            for (int i = 1; i < lines.Length; i++)
+            for (int i = 1; i < lines.Count; i++)
             {
                 var sections = lines[i].Split(' ');
                 foreach (string section in sections)
                 {
-                    if (section.Length == 0 || section == "\r")
+                    if (section.Length == 0)
                     {
                         continue;
                     }

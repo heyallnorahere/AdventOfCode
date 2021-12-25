@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AdventOfCode
 {
@@ -23,6 +24,18 @@ namespace AdventOfCode
             }
 
             return int.Parse(inputString);
+        }
+        public static List<string> SplitLines(this string input)
+        {
+            var lines = new List<string>();
+            foreach (string line in input.Split('\r', '\n'))
+            {
+                if (line.Length > 0)
+                {
+                    lines.Add(line);
+                }
+            }
+            return lines;
         }
     }
 }

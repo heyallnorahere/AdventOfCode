@@ -11,14 +11,9 @@ namespace AdventOfCode.Days.Year2021
             var numbers = new List<int>();
             int bitCount = -1;
 
-            string[] rawData = input.Split('\r', '\n');
+            var rawData = input.SplitLines();
             foreach (string line in rawData)
             {
-                if (line.Length == 0)
-                {
-                    continue;
-                }
-
                 string binaryString;
                 if (line[^1] != '\r')
                 {

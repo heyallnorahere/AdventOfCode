@@ -16,15 +16,10 @@ namespace AdventOfCode.Days.Year2021
         }
         public void Run(string input)
         {
-            string[] inputData = input.Split('\r', '\n');
+            var inputData = input.SplitLines();
             var lines = new List<Line>();
             foreach (string line in inputData)
             {
-                if (line.Length == 0)
-                {
-                    continue;
-                }
-
                 var points = new List<Vector>();
                 foreach (string pointData in line.Split(" -> "))
                 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace AdventOfCode.Days.Year2021
 {
@@ -8,16 +7,8 @@ namespace AdventOfCode.Days.Year2021
     {
         public void Run(string input)
         {
-            string[] lines = input.Split('\r', '\n');
-            var inputData = new List<int>();
-            foreach (var line in lines)
-            {
-                if (line.Length == 0)
-                {
-                    continue;
-                }
-                inputData.Add(int.Parse(line));
-            }
+            var lines = input.SplitLines();
+            var inputData = lines.ConvertAll(l => int.Parse(l));
 
             int previousDepthMeasurement = 0;
             int depthIncreaseCount = 0;

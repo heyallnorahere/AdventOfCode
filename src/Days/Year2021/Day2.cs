@@ -17,14 +17,9 @@ namespace AdventOfCode.Days.Year2021
                 throw new ArgumentException("The requested part must be either 1 or 2!");
             }
 
-            var commands = input.Split('\r', '\n');
+            var commands = input.SplitLines();
             foreach (string command in commands)
             {
-                if (command.Length == 0)
-                {
-                    continue;
-                }
-
                 string[] tokens = command.Split(' ');
                 if (tokens.Length < 2)
                 {

@@ -51,8 +51,7 @@ namespace AdventOfCode.Days.Year2021
         public void Run(string input)
         {
             // parse input into row form
-            var lines = new List<string>(input.Split('\r', '\n'));
-            var rows = lines.FindAll(l => l.Length > 0);
+            var rows = input.SplitLines();
             if (rows.Count == 0)
             {
                 throw new ArgumentException("No input was given!");

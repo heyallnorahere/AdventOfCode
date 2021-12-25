@@ -22,14 +22,9 @@ namespace AdventOfCode.Days.Year2021
             int simpleDigitCount = 0;
             int outputValueSum = 0;
 
-            string[] lines = input.Split('\r', '\n');
+            var lines = input.SplitLines();
             foreach (string line in lines)
             {
-                if (line.Length == 0)
-                {
-                    continue;
-                }
-
                 string[] sections = line.Split('|');
                 if (sections.Length != 2)
                 {
