@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.CommandLine;
+using System.CommandLine.Invocation;
 using System.IO;
 using System.Reflection;
 
@@ -103,10 +105,10 @@ namespace AdventOfCode
 
             return days;
         }
-        private static void Run(IDay instance, int year, int dayNumber)
+        private static void Run(IDay instance, int selectedYear, int selectedDay)
         {
             // read input
-            string path = $"input/{year}/{dayNumber}.txt";
+            string path = $"input/{selectedYear}/{selectedDay}.txt";
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException($"Could not open input file: {path}");
@@ -115,15 +117,17 @@ namespace AdventOfCode
             var reader = new StreamReader(stream);
             string input = reader.ReadToEnd();
 
-            // clear the console and print the url of the challenge
-            Console.Clear();
-            Console.WriteLine($"Original challenge: https://adventofcode.com/{year}/day/{dayNumber} \n");
-
-            // run code
+            // print original challenge url and run
+            Console.WriteLine($"Original challenge: https://adventofcode.com/{selectedYear}/day/{selectedDay}\n");
             instance.Run(input);
         }
-        public static void Main(string[] args)
+        private static void Menu(int y, int d)
         {
+            if (d >= 0 && y < 0)
+            {
+                throw new ArgumentException("If -d is specified, -y must also be present!");
+            }
+
             // get days from the current assembly
             var days = GetDays();
             if (days.Count == 0)
@@ -131,13 +135,18 @@ namespace AdventOfCode
                 throw new Exception("Could not find any code days!");
             }
 
-            // ask for year
-            Console.WriteLine("Years available:");
-            foreach (int year in days.Keys)
+            // if no year was specified on the command line, ask for year
+            int selectedYear = y;
+            if (selectedYear < 0)
             {
-                Console.WriteLine($"\t{year}");
+                Console.WriteLine("Years available:");
+                foreach (int year in days.Keys)
+                {
+                    Console.WriteLine($"\t{year}");
+                }
+                selectedYear = Utilities.RequestInput("Please select a year");
+                Console.Write('\n');
             }
-            int selectedYear = Utilities.RequestInput("Please select a year");
 
             // verify that the selected year exists
             if (!days.ContainsKey(selectedYear))
@@ -145,15 +154,19 @@ namespace AdventOfCode
                 throw new ArgumentException("The selected year does not exist!");
             }
 
-            // ask for day
-            Console.WriteLine("Days available:");
-            foreach (int dayNumber in days[selectedYear].Keys)
+            // if no day was specified on the command line, ask for day
+            int selectedDay = d;
+            if (selectedDay < 0)
             {
-                DayInfo dayInfo = days[selectedYear][dayNumber];
-                Console.WriteLine($"\t{dayNumber}: {dayInfo.Name}");
+                Console.WriteLine("Days available:");
+                foreach (int dayNumber in days[selectedYear].Keys)
+                {
+                    DayInfo dayInfo = days[selectedYear][dayNumber];
+                    Console.WriteLine($"\t{dayNumber}: {dayInfo.Name}");
+                }
+                selectedDay = Utilities.RequestInput("Please select a day");
+                Console.Write('\n');
             }
-            int selectedDay = Utilities.RequestInput("Please select a day");
-
 
             // verify that the requested day exists
             if (!days[selectedYear].ContainsKey(selectedDay))
@@ -164,6 +177,24 @@ namespace AdventOfCode
             // finally, run
             IDay instance = days[selectedYear][selectedDay].Instance;
             Run(instance, selectedYear, selectedDay);
+        }
+        public static int Main(string[] args)
+        {
+            var rootCommand = new RootCommand
+            {
+                new Option<int>(
+                    new string[] { "-y", "--year" },
+                    getDefaultValue: () => -1,
+                    description: "Specify a year to automatically select."),
+
+                new Option<int>(
+                    new string[] { "-d", "--day" },
+                    getDefaultValue: () => -1,
+                    description: "Specify a day to automatically select. Must only be used with -y.")
+            };
+            rootCommand.Description = "Run a solution to the Advent of Code.";
+            rootCommand.Handler = CommandHandler.Create<int, int>(Menu);
+            return rootCommand.InvokeAsync(args).Result;
         }
     }
 }

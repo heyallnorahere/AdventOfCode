@@ -136,7 +136,7 @@ namespace AdventOfCode.Days.Year2021
             }
 
             Console.WriteLine($"The sum of all low point risk levels is {riskLevelSum}.");
-            Console.WriteLine($"The product of all basin sizes is {basinSizeProduct}.");
+            Console.WriteLine($"The product of the largest 3 basin sizes is {basinSizeProduct}.");
         }
         private ulong IterateBasin(Vector position, Map map)
         {
