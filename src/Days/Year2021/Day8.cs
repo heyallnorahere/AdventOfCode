@@ -20,7 +20,7 @@ namespace AdventOfCode.Days.Year2021
         public void Run(string input)
         {
             int simpleDigitCount = 0;
-            int outputDigitSum = 0;
+            int outputValueSum = 0;
 
             string[] lines = input.Split('\r', '\n');
             foreach (string line in lines)
@@ -79,8 +79,10 @@ namespace AdventOfCode.Days.Year2021
                 }
 
                 var segmentMap = CreateSegmentMap(digitSegmentMap, digits);
-                foreach (string outputDigit in outputDigits)
+                int outputValue = 0;
+                for (int i = 0; i < outputDigits.Count; i++)
                 {
+                    string outputDigit = outputDigits[i];
                     if (outputDigit.Length == 0)
                     {
                         continue;
@@ -91,12 +93,14 @@ namespace AdventOfCode.Days.Year2021
                         simpleDigitCount++;
                     }
 
-                    outputDigitSum += GetDigit(outputDigit, segmentMap);
+                    int digitValue = GetDigit(outputDigit, segmentMap);
+                    outputValue += digitValue * (int)Math.Pow(10, outputDigits.Count - (i + 1));
                 }
+                outputValueSum += outputValue;
             }
 
             Console.WriteLine($"There are {simpleDigitCount} appearances of 1, 4, 7, or 8 in the output values.");
-            Console.WriteLine($"The total sum of all output digits is {outputDigitSum}.");
+            Console.WriteLine($"The total sum of all output values is {outputValueSum}.");
         }
         private const string fullDisplay = "abcdefg";
         private static Dictionary<char, char> CreateSegmentMap(Dictionary<int, string> digitSegmentMap, List<string> digits)
@@ -254,31 +258,20 @@ namespace AdventOfCode.Days.Year2021
             translatedSegments.CopyTo(segments);
             var translatedData = new string(segments);
 
-            switch (translatedData)
+            return translatedData switch
             {
-            case "abcefg":
-                return 0;
-            case "cf":
-                return 1;
-            case "acdeg":
-                return 2;
-            case "acdfg":
-                return 3;
-            case "bcdf":
-                return 4;
-            case "abdfg":
-                return 5;
-            case "abdefg":
-                return 6;
-            case "acf":
-                return 7;
-            case "abcdefg":
-                return 8;
-            case "abcdfg":
-                return 9;
-            default:
-                return -1;
-            }
+                "abcefg" => 0,
+                "cf" => 1,
+                "acdeg" => 2,
+                "acdfg" => 3,
+                "bcdf" => 4,
+                "abdfg" => 5,
+                "abdefg" => 6,
+                "acf" => 7,
+                "abcdefg" => 8,
+                "abcdfg" => 9,
+                _ => -1,
+            };
         }
     }
 }
