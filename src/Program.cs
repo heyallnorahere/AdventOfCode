@@ -26,9 +26,9 @@ namespace AdventOfCode
 
             return false;
         }
-        private static Dictionary<int, Dictionary<int, DayInfo>> GetDays()
+        private static IReadOnlyDictionary<int, IReadOnlyDictionary<int, DayInfo>> GetDays()
         {
-            var days = new Dictionary<int, Dictionary<int, DayInfo>>();
+            var days = new Dictionary<int, IReadOnlyDictionary<int, DayInfo>>();
 
             var assembly = typeof(Program).Assembly;
             Type[] types = assembly.GetTypes();
@@ -94,9 +94,10 @@ namespace AdventOfCode
 
                     if (!days.ContainsKey(year))
                     {
-                        days.Add(year, new Dictionary<int, DayInfo>());
+                        days.Add(year, new SortedDictionary<int, DayInfo>());
                     }
-                    days[year].Add(attribute.DayNumber, dayInfo);
+                    var dayMap = (IDictionary<int, DayInfo>)days[year];
+                    dayMap.Add(attribute.DayNumber, dayInfo);
                 }
             }
 
