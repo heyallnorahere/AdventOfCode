@@ -57,9 +57,9 @@ namespace AdventOfCode.Days.Year2021
                     firstCompleteFlash = tick;
                 }
 
-                foreach (Vector squid in flashed)
+                foreach (Vector octopus in flashed)
                 {
-                    map[squid] = 0;
+                    map[octopus] = 0;
                 }
             }
 
@@ -76,33 +76,33 @@ namespace AdventOfCode.Days.Year2021
         }
         private static int Flash(Map map, HashSet<Vector> flashed, IEnumerable<Vector>? selection = null)
         {
-            IEnumerable<Vector>? squidSelection = selection;
-            if (squidSelection == null)
+            IEnumerable<Vector>? octopusSelection = selection;
+            if (octopusSelection == null)
             {
-                var squidSet = new HashSet<Vector>();
+                var octopusSet = new HashSet<Vector>();
                 for (int x = 0; x < map.Width; x++)
                 {
                     for (int y = 0; y < map.Height; y++)
                     {
-                        squidSet.Add((x, y));
+                        octopusSet.Add((x, y));
                     }
                 }
-                squidSelection = squidSet;
+                octopusSelection = octopusSet;
             }
 
             int flashCount = 0;
-            foreach (Vector squid in squidSelection)
+            foreach (Vector octopus in octopusSelection)
             {
-                if (map[squid] <= 9 || flashed.Contains(squid))
+                if (map[octopus] <= 9 || flashed.Contains(octopus))
                 {
                     continue;
                 }
-                flashed.Add(squid);
+                flashed.Add(octopus);
 
                 var newSelection = new HashSet<Vector>();
                 foreach (Vector offset in mAdjacentOffsets)
                 {
-                    Vector toFlash = squid + offset;
+                    Vector toFlash = octopus + offset;
                     if (map.IsOutOfBounds(toFlash))
                     {
                         continue;
