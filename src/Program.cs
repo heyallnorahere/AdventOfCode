@@ -121,18 +121,13 @@ namespace AdventOfCode
             Console.WriteLine($"Original challenge: https://adventofcode.com/{selectedYear}/day/{selectedDay}\n");
             instance.Run(input);
         }
-        private static void Menu(int y, int d)
+        private static bool Menu(int y, int d)
         {
-            if (d >= 0 && y < 0)
-            {
-                throw new ArgumentException("If -d is specified, -y must also be present!");
-            }
-
             // get days from the current assembly
             var days = GetDays();
             if (days.Count == 0)
             {
-                throw new Exception("Could not find any code days!");
+                throw new Exception("Could not find any completed days!");
             }
 
             // if no year was specified on the command line, ask for year
@@ -140,11 +135,16 @@ namespace AdventOfCode
             if (selectedYear < 0)
             {
                 Console.WriteLine("Years available:");
+                Console.WriteLine("\t-1: Exit");
                 foreach (int year in days.Keys)
                 {
                     Console.WriteLine($"\t{year}");
                 }
                 selectedYear = Utilities.RequestInput("Please select a year");
+                if (selectedYear == -1)
+                {
+                    return false;
+                }
                 Console.Write('\n');
             }
 
@@ -159,12 +159,17 @@ namespace AdventOfCode
             if (selectedDay < 0)
             {
                 Console.WriteLine("Days available:");
+                Console.WriteLine("\t-1: Go back");
                 foreach (int dayNumber in days[selectedYear].Keys)
                 {
                     DayInfo dayInfo = days[selectedYear][dayNumber];
                     Console.WriteLine($"\t{dayNumber}: {dayInfo.Name}");
                 }
                 selectedDay = Utilities.RequestInput("Please select a day");
+                if (selectedDay == -1)
+                {
+                    return true;
+                }
                 Console.Write('\n');
             }
 
@@ -177,6 +182,23 @@ namespace AdventOfCode
             // finally, run
             IDay instance = days[selectedYear][selectedDay].Instance;
             Run(instance, selectedYear, selectedDay);
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
+            Console.Write('\n');
+            return true;
+        }
+        public static void MenuHandler(int y, int d)
+        {
+            if (d >= 0 && y < 0)
+            {
+                throw new ArgumentException("If -d is specified, -y must also be present!");
+            }
+
+            do
+            {
+                Console.Clear();
+            }
+            while(Menu(y, d));
         }
         public static int Main(string[] args)
         {
@@ -193,7 +215,7 @@ namespace AdventOfCode
                     description: "Specify a day to automatically select. Must only be used with -y.")
             };
             rootCommand.Description = "Run a solution to the Advent of Code.";
-            rootCommand.Handler = CommandHandler.Create<int, int>(Menu);
+            rootCommand.Handler = CommandHandler.Create<int, int>(MenuHandler);
             return rootCommand.InvokeAsync(args).Result;
         }
     }
