@@ -107,17 +107,17 @@ namespace AdventOfCode.Days.Year2021
             }
 
             // isolate C and F
-            string oneSegments = digitSegmentMap[1];
-            Isolate("cf", oneSegments, possibilityMap);
+            string segmentCF = digitSegmentMap[1];
+            Isolate("cf", segmentCF, possibilityMap);
 
             // isolate B and D
             string fourSegments = digitSegmentMap[4];
-            string segmentBD = Eliminate(fourSegments, oneSegments);
+            string segmentBD = Eliminate(fourSegments, segmentCF);
             Isolate("bd", segmentBD, possibilityMap);
 
             // isolate A
             string sevenSegments = digitSegmentMap[7];
-            string segmentA = Eliminate(sevenSegments, oneSegments);
+            string segmentA = Eliminate(sevenSegments, segmentCF);
             Isolate("a", segmentA, possibilityMap);
 
             // find groups of digits with segment counts of 5 and 6
@@ -162,7 +162,7 @@ namespace AdventOfCode.Days.Year2021
 
             // isolate E
             string segmentB = possibilityMap['b'];
-            string requiredZeroSegments = segmentA + segmentB + oneSegments + segmentG;
+            string requiredZeroSegments = segmentA + segmentB + segmentCF + segmentG;
             var zero = FindDigit(group069, requiredZeroSegments, segmentD);
             if (zero == null)
             {
@@ -184,7 +184,12 @@ namespace AdventOfCode.Days.Year2021
             var segmentMap = new Dictionary<char, char>();
             foreach (char visible in possibilityMap.Keys)
             {
-                segmentMap.Add(possibilityMap[visible][0], visible);
+                string isolatedSegment = possibilityMap[visible];
+                if (isolatedSegment.Length != 1)
+                {
+                    throw new Exception($"Could not isolate a mapping for visible segment {visible}!");
+                }
+                segmentMap.Add(isolatedSegment[0], visible);
             }
             return segmentMap;
         }
