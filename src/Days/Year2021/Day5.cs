@@ -1,3 +1,4 @@
+using AdventOfCode.Structures;
 using System;
 using System.Collections.Generic;
 

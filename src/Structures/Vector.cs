@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace AdventOfCode
+namespace AdventOfCode.Structures
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector

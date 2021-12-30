@@ -182,10 +182,18 @@ namespace AdventOfCode
             // finally, run
             IDay instance = days[selectedYear][selectedDay].Instance;
             Run(instance, selectedYear, selectedDay);
-            Console.Write("Press any key to continue...");
-            Console.ReadKey();
-            Console.Write('\n');
-            return true;
+
+            if (d < 0)
+            {
+                Console.Write("Press any key to continue...");
+                Console.ReadKey();
+                Console.Write('\n');
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static void MenuHandler(int y, int d)
         {
@@ -196,7 +204,10 @@ namespace AdventOfCode
 
             do
             {
-                Console.Clear();
+                if (d < 0)
+                {
+                    Console.Clear();
+                }
             }
             while(Menu(y, d));
         }

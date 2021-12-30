@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AdventOfCode.Structures;
+using System;
 using System.Collections.Generic;
 
 namespace AdventOfCode.Days.Year2021
@@ -6,33 +7,6 @@ namespace AdventOfCode.Days.Year2021
     [Day(9, "Smoke Basin")]
     public sealed class Day9 : IDay
     {
-        private class Map
-        {
-            public Map(int width, int height)
-            {
-                Width = width;
-                Height = height;
-                mData = new int[width, height];
-            }
-            public int this[int x, int y]
-            {
-                get => mData[x, y];
-                set => mData[x, y] = value;
-            }
-            public int this[Vector position]
-            {
-                get => mData[position.X, position.Y];
-                set => mData[position.X, position.Y] = value;
-            }
-            public int Width { get; }
-            public int Height { get; }
-            public bool IsOutOfBounds(Vector position)
-            {
-                return position.X < 0 || position.X >= Width ||
-                    position.Y < 0 || position.Y >= Height;
-            }
-            private readonly int[,] mData;
-        }
         static Day9()
         {
             mAdjacentOffsets = new Vector[]
